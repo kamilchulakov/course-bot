@@ -1,0 +1,47 @@
+name: Create and publish a Docker image
+
+on:
+  push:
+  pull_request:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Prepare java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@9.5
+        with:
+          cli: 1.11.1.1155
+          
+      - name: clj-kondo checks
+        uses: DeLaGuardo/clojure-lint-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - uses: bltavares/actions/cljfmt@1.0.8
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: autofix src test
+
+      - name: Tests
+        run: |
+          clojure -X:test
+       
