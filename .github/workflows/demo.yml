@@ -36,11 +36,6 @@ jobs:
       - name: clj-kondo checks
         run: clj-kondo --lint src
           
-      - uses: bltavares/actions/cljfmt@1.0.8
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: autofix src test
 
       - name: Tests
         run: |
