@@ -30,6 +30,9 @@ jobs:
         with:
           cli: 1.11.1.1155
           
+      - name: Setup clj-kondo
+        uses: DeLaGuardo/setup-clj-kondo@v1
+        
       - name: clj-kondo checks
         uses: DeLaGuardo/clojure-lint-action@v1
         with:
