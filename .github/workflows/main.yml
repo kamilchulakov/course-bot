@@ -29,6 +29,11 @@ jobs:
         uses: DeLaGuardo/setup-clojure@9.5
         with:
           cli: 1.11.1.1155
+          
+      - name: clj-kondo checks
+        uses: DeLaGuardo/clojure-lint-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tests
         run: |
