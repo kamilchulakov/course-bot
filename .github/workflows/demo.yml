@@ -34,7 +34,7 @@ jobs:
           version: '2021.12.16'
 
       - name: Run on Ubuntu
-        run: clj-kondo --lint deps.edn --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
+        run: clj-kondo --lint src --lint test
         
       - name: cljfmt
         run: clojure -Sdeps '{:deps {cljfmt {:mvn/version "0.9.2"}}}' -M -m cljfmt.main check
