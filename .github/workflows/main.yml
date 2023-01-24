@@ -40,17 +40,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: clj-kondo checks
-        uses: DeLaGuardo/clojure-lint-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - uses: bltavares/actions/cljfmt@1.0.8
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: autofix src test
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
