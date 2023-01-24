@@ -43,11 +43,6 @@
       (keyword (first args))
       nil)))
 
-(defn id-from-arg [tx text]
-  (let [args (command-args text)]
-    (when (and (= (count args) 1) (re-matches #"^\d+$" (first args)))
-      (Integer/parseInt (first args)))))
-
 (def *helps (atom {}))
 
 (defn helps []
@@ -149,21 +144,6 @@
                            (talk/stop-talk ~tx))))
 
 ;; tests
-
-(defmacro deftest [name args & body]
-  (let [test-db "test-databases/example-database"
-        [db *chat] args]
-    `(test/deftest ~name
-       (codax/destroy-database! ~test-db)
-       (let [~*chat (atom (list))
-             ~db (codax/open-database! ~test-db)]
-         (with-redefs [talk/send-text (fn [token# id# msg#]
-                                        (assert (= "TOKEN" token#))
-                                        (swap! ~*chat conj {:id id# :msg msg#}))
-                       talk/send-yes-no-kbd (fn [token# id# msg#] (swap! ~*chat conj {:id id# :msg msg#}))
-                       talk/send-document (fn [token# id# file#] (swap! ~*chat conj {:id id# :msg (slurp file#)}))]
-           ~@body)
-         (codax/destroy-database! ~test-db)))))
 
 (defn msg
   ([msg] {:message {:from {:id 1} :text msg}})
