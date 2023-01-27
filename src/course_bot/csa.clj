@@ -8,7 +8,8 @@
             [course-bot.presentation :as pres]
             [course-bot.general :as general :refer [tr]]
             [course-bot.essay :as essay]
-            [course-bot.talk :as talk]))
+            [course-bot.talk :as talk])
+  (:gen-class))
 
 (general/set-locales [:ru :en])
 (general/add-dict
@@ -104,3 +105,6 @@
           (recur (polling/start token bot-api)))
       (recur channel)))
   (println (tr :csa/stop)))
+
+(defn -main [& args]
+  (run))
